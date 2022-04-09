@@ -6,4 +6,4 @@ RUN npm i --save
 RUN node ace migration:refresh  && node ace db:seed 
 
 EXPOSE 3000
-CMD ["npm run ", "start"]
+CMD ["npm", "run","start"]
