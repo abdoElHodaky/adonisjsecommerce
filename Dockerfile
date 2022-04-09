@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:6-alpine3.15
 WORKDIR /app
 COPY . .
 RUN apk add --no-cache build-base tzdata sqlite-dev postgresql-dev mysql-dev python2 python3 clang git
