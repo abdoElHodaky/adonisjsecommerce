@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . .
 RUN apk add --no-cache build-base tzdata sqlite-dev postgresql-dev mysql-dev python2 python3 clang
 RUN npm i -g node-gyp && npm i
-RUN node ace migrate 
+RUN node ace migration:run && node ace db:seed 
 
 EXPOSE 3000
 CMD ["npm run ", "start"]
