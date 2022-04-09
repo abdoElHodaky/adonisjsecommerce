@@ -1,0 +1,67 @@
+{% extends 'master' %}
+{% block content %}
+<div class="sidebar-menu" style="height:100%">
+    <ul id="menu">
+      <li>
+        <a href="/Home">Home</a>
+      </li>
+        <li>
+        <a href="/Shop">Shops</a>
+      </li>
+       <li>
+        <a def="/logout" href="/logout">Logout</a>
+       </li>
+      </ul>
+</div>
+<div class="inner-block container">
+  <table class="table table-strippd">
+    <thead>
+      <th>#</th>
+      <th>Paid_by</th>
+      <th>Amount</th>
+    </thead>
+    <tbody>
+      {% for item in user.payments %}
+        <tr>
+          <td>{{item.id}}</td>
+          <td>{{user.Name}}</td>
+          <td>{{item.amount}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table class="table table-strippd">
+    <thead>
+      <th>#</th>
+      <th>Created_by</th>
+      <th>products</th>
+    </thead>
+    <tbody>
+      {% for item in user.orders %}
+        <tr>
+          <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.created_by}}</td>
+            <td>
+              <table class="table table-strippd">
+                <thead>
+                  <th>#</th>
+                  <th>Quantity</th>
+                </thead>
+                <tbody>
+                  {% for product in item.products %}
+                    <tr>
+                      <td>{{product.id}}</td>
+                      <td>{{product.Quantity}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

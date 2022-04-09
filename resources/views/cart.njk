@@ -1,0 +1,137 @@
+{% extends 'master' %}
+{% block content %}
+	<div class="page-container contaienr">
+		<div class="sidebar-menu">
+                <ul id="menu">
+                    <li><a href="/Shop"><i class="fa fa-cogs"></i><span>Home</span></a>
+                    </li>
+                    <li><a href="/cart"><i class="fa fa-shopping-cart"></i><span>Cart</span></a>
+                 </li>
+                  </ul>
+         </div>
+		<div class="inner-block container">
+    <div class="row ">
+    	<div class="col-md-8">
+    		<table class="table" id="cartc">
+    		<thead>
+    			<th>ProductName</th>
+    			<th>Quantity</th>
+    			<th>Price</th>
+    			<th>Remove</th>
+    		</thead>
+    			<tbody>
+    			</tbody>
+    			<tfoot></tfoot>
+    		</table>
+    	</div>
+    	<div class="col-md-4">
+    		<div class="row well-lg well" def='vorder'>
+
+    		</div>
+    	</div>
+    	<div class="row">
+    	<div id="procced" class="col-md-8">
+
+		</div>
+    	</div>
+      <div class="clearfix"> </div>
+    </div>
+</div>
+	</div>
+    <div class="modal" tabindex="-1" role="dialog" id="Omodal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pay</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form >
+          <div class="form-group">
+            <label for="Name" class="col-form-label">Name:</label>
+            <input type="text" class="form-control"  name="Name" id="Name">
+          </div>
+          <div class="form-group">
+           <label for="CN" class="col-form-label">CreditNumber:</label>
+            <input type="text" class="form-control"  name="CN" id="CN">
+          </div>
+          <div class="form-group">
+            <label for="CVV" class="col-form-label">CVV:</label>
+            <input type="text" class="form-control"  name="CVV" id="CVV">
+          </div>
+          <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Send message</button>
+      </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</div>
+    <script type="text/javascript">
+        var cart=JSON.parse(session.oproducts);
+        makeCart(cart)
+        function makeCart(Scart){
+            var html="",total=0;
+            for(var i in Scart){
+            total+=parseInt(Scart[i].q)*parseInt(Scart[i].price);
+            html+="<tr><td>"+"<img src="+Scart[i].img+" width='25%'height='30%'><h4>"+i+"</h4></td><td><div class='col-sm-5'><input min=1 max=10 type='number' value="+Scart[i].q+" class='form-control'></div></td><td>"+Scart[i].price+"<i class='fa fa-doller'></i></td><td><a class='btn btn-secondary glyphicon glyphicon-remove' style='color:#CB2527' def='cr'></a></td></tr>"
+        }
+            $('#cartc tbody').html(html);
+            $('#cartc tfoot').html("<th>Total</th><th>"+total.toString()+"</th>");
+            session.setItem('subtotal',total);
+            html="<div class='col-sm-4'>subTotal</div><div class='col-sm-8'>"+total.toString()+"</div><div class='col-sm-4'>shipping</div><div class='col-sm-8'>5</div><div class='col-sm-4'>Total</div><div class='col-sm-8'>"+(total+=5).toString()+"</div><div class='col-sm-12'><a style='color:#259AD6'def='corder' class='btn btn-block btn-secondary'>CreateOrder</a></div>";
+            session.setItem('total',total);
+            $('[def=vorder]').html(html);
+        }
+
+        setInterval(()=>{
+                $('a[def=cr]').click((event)=>{
+                event.preventDefault();
+                a=$('#cartc tr').has(event.target);
+                delete cart[a.find('h4').text().trim()];
+                session.setItem('oproducts',JSON.stringify(cart));
+                a.remove();
+                client.emit('change',cart)
+            })
+
+            $("input[type=number]").change((event)=>{
+
+                a=$('#cartc tr').has(event.target);
+                cart[a.find('h4').text().trim()].q=event.target.value;
+                session.setItem('oproducts',JSON.stringify(cart));
+                client.emit('change',cart)
+
+            });
+    },100)
+        client.on("changed",(cart)=>{
+             makeCart(cart)
+             $("[def='corder']").click((event)=>{
+                $("#Omodal").modal("show")
+                $("#Omodal form").submit(event=>{
+                event.preventDefault();
+                client.emit("buy",cart,$(event.target).serializeArray());
+              $("#Omodal").modal("hide")
+              })
+            })
+         })
+         $("[def='corder']").click((event)=>{
+                $("#Omodal").modal("show")
+                $("#Omodal form").submit(event=>{
+                event.preventDefault();
+                client.emit("buy",cart,$(event.target).serializeArray());
+              $("#Omodal").modal("hide")
+              })
+            })
+      client.on("ok",d=>{
+				alert(d)
+				$("table,.well").empty()
+				setTimeout(()=>{location.assign("/Shop")
+				},1000)
+			})
+    </script>
+{% endblock %}

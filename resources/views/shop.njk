@@ -1,0 +1,214 @@
+{% extends 'master' %}
+{% block content %}
+	<div class="page-container container">
+	<!--slider menu-->
+	    <div class="sidebar-menu">
+			  	<ul id="menu">
+					<li>
+						<a href="/Home">Home</a>
+					</li>
+			        <li><a href="#"><i class="fa fa-cogs"></i><span>Cats</span><span class="fa fa-angle-right" style="float: right"></span></a>
+			          <ul>
+			          {% if cats and cats!=[] %}
+			          {% for i in cats %}
+			            <li><a href="?cat={{i.Name}}">{{i.Name}}</a></li>
+			           {% endfor %}
+			           {% endif %}
+			          </ul>
+			        </li>
+			        <li><a href="/cart"><i class="fa fa-shopping-cart"></i><span>Cart</span></a>
+		         </li>
+		         <li>
+		         	<a def="compare">Compare</a>
+		         </li>
+						 <li>
+		         	<a def="logout" href="/logout">Logout</a>
+		         </li>
+			      </ul>
+		 </div>
+	<div class="clearfix"> </div>
+
+			<div class="inner-block container">
+	    	<div class="product-block row">
+	    	<div class="pro-head">
+	    		<a href="/Shop/{{shop.Name}}" class="btn btn-link"><h2>Products</h2></a>
+	    	</div>
+	    	{% if products and products!=[] %}
+	    	{% for i in products %}
+	    	<div class="col-md-3 col-sm-6 col-xs-4 product-grid" q='0' Incart='false'>
+	    		<div class="product-items">
+		    		    <div class="project-eff">
+							<a data-open="#">
+							<img src="data:image/jpeg;base64,{{i.Image}}" class="img-responsive" width='100%' height='150' alt="{{i.Name}}"></a>
+						</div>
+		    		<div class="produ-cost">
+		    			<h4>
+		    			{{i.Name}}
+		    			<div class="check pull-right">
+			                     <input type="checkbox" value="{{i.id}}" id="check{{i.id}}" />
+			                     <label for="check{{i.id}}"></label>
+	                		</div>
+		    			</h4>
+		    			<h5>
+		    				<div class="btn-group">
+						  <a class="btn btn-warning btn-xs fa fa-plus"><b>Q+</b></a>
+						  <div class="pull-right">
+						   <p class="price">{{i.Price}}<i class="fa fa-dollar"></i></p>
+						  </div>
+		    				<div class="col-sm-offset-12 pull-right mb-60">
+								{% if i.Quantity >10 %}
+								<label class="label label-success">InStock</label>
+								{% endif %}
+								{% if i.Quantity ==10 %}
+								<label class="label label-warning">Limited</label>
+								{% endif %}
+								{% if i.Quantity <10 %}
+								<label class="label label-danger">OutStock</label>
+								{% endif %}
+							</div>
+		    			</h5>
+					</div>
+				</div>
+	    	</div>
+	    	{% endfor %}
+	    	{% endif %}
+				</div>
+				{% if type == 'Owner' %}
+	    	<div class="col-md-3 col-sm-6 col-xs-4 product-grid">
+	    		{{form.open({action:"ProductController.store",class:"form-horizontal"})}}
+				{{csrfField}}
+	    		<div class="product-items">
+		    		    <div class="project-eff">
+							<a data-open="#">
+							<img src="//placehold.it/200/200" class="img-responsive" width='100%' height='150' alt="image"></a>
+						</div>
+		    		<div class="produ-cost">
+		    			<h4>
+
+		    			<h5>
+		    				<div class="pull-right">
+		    				{{form.text("Name",'',{class:'form-control input input-sm',placeholder:'Name'})}}
+						   <p class="price"><input type="number" placeholder="ProductPrice" name="price" class="form-control input input-sm">
+							 <i class="fa fa-dollar"></i>
+							 <input type="number" placeholder="ProductQuantity" name="quantity" min='1' class="form-control input input-sm">
+							 </p>
+
+						   <div class="pull-left">
+						   	<select name="Cat" class='form-control input input-sm'>
+						   		{% for i in cats %}
+						   		<option value="{{i.id}}">{{i.Name}}</option>
+						   		{% endfor %}
+						   	</select>
+						   <input type="number" id="SpecNum" name="CatNum" min="1" max="4" required class="form-control input input-sm">
+						   </div>
+						  </div>
+		    				<div class="btn-group">
+						  {{form.submit("Save","Save",{class:'btn btn-sm btn-primary'})}}
+		    				</div>
+		    			</h5>
+					</div>
+				</div>
+			{{form.close()}}
+	    	</div>
+				{% endif %}
+	      <div class="clearfix"> </div>
+	    </div>
+			<div id="view">
+
+			</div>
+	</div>
+	</div>
+</div>
+	<script type="text/javascript">
+		cart={};
+		var session=sessionStorage;
+	$(".btn.btn-warning.fa-plus").click((event)=>{
+		event.preventDefault();
+		a=$(".product-grid").has(event.target);
+		if (parseInt(a.attr("q"))>5) {
+			diff=parseInt(a.attr("q"))-5;
+			a.attr("q",parseInt(a.q)-diff);
+		}
+		else{
+		a.attr('q',parseInt(a.attr('q'))+1);
+		}
+			if (a.attr('Incart')=='true') {
+				cart[a.find('h4').text().trim()]={q:a.attr('q'),img:a.find('img').attr('src'),price:a.find('p.price').text().trim()};
+			}
+			else{
+				delete cart[a.find('h4').text().trim()];
+			}
+			if (!session.oproducts)
+			{
+					session.setItem('oproducts',"{}");
+			}
+			else
+			{
+			Scart=JSON.parse(session.oproducts);
+			for(var i in cart){
+				for(var j in Scart){
+					if (i!=j) {
+						cart[j]=Scart[j];
+					}
+					else{break;}
+				}
+			}
+		}
+			session.setItem('oproducts',JSON.stringify(cart));
+	})
+	var Names=[]
+	$('[for^=check]').click((event)=>{
+		a=$(".product-grid").has(event.target);
+		if (a.attr('Incart')=='false') {
+			a.attr('Incart','true');
+		}
+		else{
+			a.attr('Incart','false');
+		}
+		Names.push(a.find("h4").text().trim())
+	});
+	$("[def='compare']").click(event=>{
+			$.post(
+			"/Product/compare",
+			{products:Names,
+			_csrf:`${$("input[name='_csrf']").val()}`}
+		).done(r=>{
+			$("#view").html(r)
+			$("#view .modal").modal("show");
+		}).fail(err=>console.log(err))
+	})
+	var obj = $("form img");
+	obj.on('dragenter dragover drop', function (e)
+	{
+	    e.stopPropagation();
+	    e.preventDefault();
+	     var files = e.originalEvent.dataTransfer.files;
+	 	var file=files[0]
+	 	var filereader=new FileReader()
+	 	filereader.onloadend=(event)=>{
+	 		obj.attr('src',event.target.result);
+	 		$("form h4").append("<input type='hidden' name='avatar' value="+obj.attr("src").slice(22,obj.attr("src").length)+">");
+	 	}
+	 	filereader.readAsDataURL(file);
+
+	});
+	$("#SpecNum").change(event=>{
+		var num=event.target.value
+		if(num<$("input[name='SpecName[]']").length)
+		{
+			$("input[name='SpecName[]']")[num-1].remove()
+			$("input[name='SpecValue[]']")[num-1].remove()
+		}else{
+		$(event.target).parent().append(
+			"<input type='text' name='SpecName[]' class='form-control input input-sm' placeholder='SpecName' >",
+			"<input type='text' name='SpecValue[]' class='form-control input input-sm' placeholder='SpecValue'>"
+		);}
+
+	})
+	$("[def='logout']").click(event=>{
+		//event.preventDefault();
+		session.clear()
+	})
+	</script>
+
+{% endblock %}

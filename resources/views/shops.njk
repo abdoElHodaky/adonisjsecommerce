@@ -1,0 +1,88 @@
+{% extends 'master' %}
+{% block content %}
+    <div class="page-container">
+    <!--slider menu-->
+  	    <div class="sidebar-menu">
+  			  	<ul id="menu">
+  			        <li>
+                  <a href="/Home">Home</a>
+                </li>
+                  <li>
+                    <a def="logout" href="/logout">Logout</a>
+                  </li>
+
+  		         </li>
+  			      </ul>
+  		 </div>
+    <div class="inner-block container">
+  	<div class="row">
+      {% if shops and shops!=[] %}
+  		{% for i in shops %}
+  			<div class="col-md-3 col-sm-6 col-xs-4 product-grid" q='0' Incart='false'>
+          <div class="product-items">
+                <div class="project-eff">
+              <a data-open="#">
+              <img src="{{i.Image}}" class="img-responsive" width='100%' height='150' alt="{{i.Name}}"></a>
+            </div>
+            <div class="produ-cost">
+              <h4>
+              {{i.Name}}
+              </h4>
+              <h5>
+              <div class="btn-group">
+              <div class="pull-right">
+               <a class="btn btn-primary btn-sm glyphicon glyphicon-eye" href="/Shop/{{i.Name}}">View</a>
+              </div>
+              </h5>
+          </div>
+        </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% if type=="Owner" %}
+        <div class="col-md-3 col-sm-6 col-xs-4 product-grid">
+          {{form.open({action:"ShopController.store",class:"form-horizontal"})}}
+        {{csrfField}}
+          <div class="product-items">
+                <div class="project-eff">
+              <a data-open="#">
+              <img src="//placehold.it/200/200" class="img-responsive" width='100%' height='150' alt="image"></a>
+            </div>
+            <div class="produ-cost">
+              <h4>
+
+                {{form.text("Name",'',{class:'form-control input input-sm',placeholder:'Name',required:'required'})}}
+                {{form.text("Desc",'',{class:'form-control input input-sm',placeholder:'Desc',required:'required'})}}
+                <input type="number" id="CatNum" name="CatNum" min="1" max="4" required class="form-control input input-sm">
+              <h5>
+                <div class="btn-group">
+                  {{form.submit("Save","Save",{class:'btn btn-sm btn-primary'})}}
+                </div>
+              </div>
+
+              </h5>
+              </h4>
+          </div>
+        </div>
+      {{form.close()}}
+        </div>
+        {% endif %}
+  	</div>
+  </div>
+  </div>
+  <script>
+  $("#CatNum").change(event=>{
+    var num=event.target.value
+    if(num<$("input[name='CatName[]']").length)
+    {
+      $("input[name='CatName[]']")[num-1].remove()
+      $("input[name='CatDesc[]']")[num-1].remove()
+    }else{
+    $(event.target).parent().append(
+      "<input type='text' name='CatName[]' class='form-control input input-sm' placeholder='CatName' >",
+      "<input type='text' name='CatDesc[]' class='form-control input input-sm' placeholder='CatDesc'>"
+    );}
+
+  })
+  </script>
+{% endblock %}
