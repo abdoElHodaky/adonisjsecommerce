@@ -40,6 +40,6 @@
     "standard": "^10.0.1"
   },
   "engines":{
-    "node":"6.11.x"
+    "node":"12.14.x"
   }
 }
