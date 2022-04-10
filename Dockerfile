@@ -5,5 +5,5 @@ RUN apk add --no-cache build-base tzdata sqlite-dev postgresql-dev mysql-dev pyt
 RUN npm i -g node-gyp
 RUN node ace migration:refresh  && node ace db:seed 
 
-EXPOSE 3000
+EXPOSE 3333
 CMD ["npm", "run","start"]
