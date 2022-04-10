@@ -22,9 +22,9 @@ class DatabaseSeeder {
      yield Factory.model('App/Model/Shop').create(1)
      var cats=yield Factory.model("App/Model/Cat").create(3)
      cats.each(function *(cat){
-     	var product=Factory.model("App/Model/Product").make(1)
-       console.log(yield cat.products())	
+     	var product=Factory.model("App/Model/Product").make(1)	
        yield cat.products().create(product)
+       console.log(yield cat.products())
      })
   }
 
