@@ -2,7 +2,7 @@ FROM node:6-alpine
 #WORKDIR /app
 COPY . .
 #RUN mkdir tmp
-RUN apk add --no-cache build-base tzdata sqlite-dev postgresql-dev mysql-dev  git
+RUN apk add --no-cache build-base tzdata sqlite-dev sqlite git
 RUN git config --global url."https://".insteadOf ssh://
 RUN npm config set ssl-strict=false && npm i
 RUN npm install sqlite3@3.1.9 --save
