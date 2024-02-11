@@ -10,4 +10,4 @@ RUN node ace migration:run && node ace db:seed
 #RUN node ace migration:refresh --force  && node ace db:seed --force
 
 EXPOSE 3333
-CMD ["node","ace serve"]
+CMD ["npm ","run start"]
