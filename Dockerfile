@@ -1,6 +1,7 @@
 FROM node:8-alpine
 #WORKDIR /app
 COPY . .
+RUN mkdir tmp
 RUN apk add --no-cache build-base tzdata sqlite-dev postgresql-dev mysql-dev  git
 RUN git config --global url."https://".insteadOf ssh://
 RUN npm config set ssl-strict=false && npm i
