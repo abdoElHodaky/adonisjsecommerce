@@ -5,7 +5,7 @@ COPY . .
 RUN apk add --no-cache build-base tzdata sqlite-dev postgresql-dev mysql-dev  git
 RUN git config --global url."https://".insteadOf ssh://
 RUN npm config set ssl-strict=false && npm i
-npm install sqlite3@4.0.9 --save
+RUN npm install sqlite3@4.0.9 --save
 RUN node ace migration:run
 RUN node ace migration:refresh --force  && node ace db:seed --force
 
