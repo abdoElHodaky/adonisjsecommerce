@@ -25,7 +25,7 @@ class DatabaseSeeder {
      	var product=Factory.model("App/Model/Product").make(1)	
       product.cid=cat.id
       yield product.save()
-      cat.sid=shop.id
+      cat.sid=shop.attributes["id"]
       yield cat.save()
 
        //yield cat.products().save(product)
