@@ -10,4 +10,4 @@ RUN npm i
 #RUN node ace migration:refresh --force
 #RUN node ace db:seed --force
 #RUN node ace migration:refresh --force  && node ace db:seed --force
-CMD ["npx"," start"]
+CMD ["npm run"," serve"]
