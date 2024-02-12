@@ -27,7 +27,7 @@ class DatabaseSeeder {
       yield product.save()
 
        //yield cat.products().save(product)
-       console.log(yield cat.products())
+      // console.log(yield cat.products())
      })
   }
 
