@@ -8,8 +8,8 @@ RUN npm config set ssl-strict=false
 ENV NODE_ENV development
 ENV PORT 3333
 RUN npm i
-RUN node ace migration:refresh --force
-RUN node ace db:seed --force
+#RUN node ace migration:refresh --force
+#RUN node ace db:seed --force
 #RUN node ace migration:refresh --force  && node ace db:seed --force
 EXPOSE 3333
 CMD ["npm run"," serve"]
