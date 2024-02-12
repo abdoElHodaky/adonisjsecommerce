@@ -31,7 +31,7 @@ class DatabaseSeeder {
        //yield cat.products().save(product)
       // console.log(yield cat.products())
      })
-    // console.log(user.attributes,shop.attributes)
+    console.log(user,shop)
      shop.uid=user.id
      yield shop.save()
   }
