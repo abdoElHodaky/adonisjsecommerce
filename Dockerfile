@@ -10,6 +10,4 @@ RUN npm install sqlite3@4.0.9 --save
 RUN node ace migration:run 
 RUN node ace db:seed
 #RUN node ace migration:refresh --force  && node ace db:seed --force
-
-EXPOSE 3333
 CMD ["./build.sh"]
