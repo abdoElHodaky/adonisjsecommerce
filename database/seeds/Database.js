@@ -33,7 +33,7 @@ class DatabaseSeeder {
        //yield cat.products().save(product)
       // console.log(yield cat.products())
      })
-    console.log(user,shop)
+   // console.log(user,shop)
   }
   
 
