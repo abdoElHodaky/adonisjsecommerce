@@ -10,4 +10,4 @@ RUN npm config set ssl-strict=false && npm i
 #RUN node ace migration:refresh --force  && node ace db:seed --force
 
 EXPOSE 3000
-CMD ["./build"]
+CMD ["./build.sh"]
