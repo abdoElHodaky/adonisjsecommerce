@@ -11,4 +11,4 @@ RUN npm install sqlite3@4.0.9 --save
 RUN node ace migration:run --force
 RUN node ace db:seed
 #RUN node ace migration:refresh --force  && node ace db:seed --force
-CMD ["npx"," serve"]
+CMD ["npx"," start"]
