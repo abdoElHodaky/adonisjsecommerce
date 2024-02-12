@@ -1,4 +1,4 @@
- npm install sqlite3@4.0.9 --save
+ npm install sqlite3 --save
  node ace migration:run 
  node ace db:seed
  node ace serve
