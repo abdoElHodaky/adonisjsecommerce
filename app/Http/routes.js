@@ -16,7 +16,7 @@
 */
 
 const Route = use('Route')
-Route.get("/",*(request,respose)=>{
+Route.get("/",(request,respose)=>{
    yield response.redirect("home")
 })
 Route.get("/Logout","UserController.logout")
