@@ -90,6 +90,9 @@ class UserController {
     }
     response.redirect("/Home")
   }
+ *home(request,response){
+  response.redirect("home")
+ }
 
 }
 
