@@ -16,11 +16,9 @@
 */
 
 const Route = use('Route')
-Route.get("/",(request,respose)=>{
-    response.redirect("home")
-})
+Route.get("/","UserController.home")
 Route.get("/Logout","UserController.logout")
-Route.resource("Home","UserController").addCollection("login", ['POST'])
+Route.resource("Home","UserController").addCollection("login", ['POST']).addCollection("home",["get"])
 Route.resource("Product","ProductController").addCollection("compare",['GET','POST'])
 Route.resource("Shop","ShopController")
 Route.resource("Cart","CartController")
