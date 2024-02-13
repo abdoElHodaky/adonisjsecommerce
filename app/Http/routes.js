@@ -17,7 +17,7 @@
 
 const Route = use('Route')
 Route.get("/",(request,respose)=>{
-   yield response.redirect("home")
+   return response.redirect("home")
 })
 Route.get("/Logout","UserController.logout")
 Route.resource("Home","UserController").addCollection("login", ['POST'])
